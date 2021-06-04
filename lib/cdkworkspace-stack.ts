@@ -6,12 +6,15 @@ import { TableViewer } from 'cdk-dynamo-table-viewer';
 
 
 export class CdkworkspaceStack extends cdk.Stack {
+  public readonly hcViewerUrl: cdk.CfnOutput;
+  public readonly hcEndpoint: cdk.CfnOutput;
+
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     //define an aws lambda resource
     const hello = new lambda.Function(this, 'HelloHandler', {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_10_X,
       code: lambda.Code.fromAsset('lambda'),
       handler: 'hello.handler'
     });
@@ -21,16 +24,25 @@ export class CdkworkspaceStack extends cdk.Stack {
     });
 
     //define an API Gateway REST API resource backend by our "Hello" function.
-    new apigw.LambdaRestApi(this, 'Endpoint', {
+   const gateway = new apigw.LambdaRestApi(this, 'Endpoint', {
       //handler: hello
       handler: helloWithCounter.handler
     } );
 
-    new TableViewer(this, 'ViewHitCounter', {
+    const tv = new TableViewer(this, 'ViewHitCounter', {
       title: 'Hello Hits',
       table: helloWithCounter.table,
       sortBy: '-hits'
     });
+
+    this.hcEndpoint = new cdk.CfnOutput(this, 'GatewayUrl', {
+      value: gateway.url
+    });
+
+    this.hcViewerUrl = new cdk.CfnOutput(this, 'TableViewerUrl', {
+      value: tv.endpoint
+    });
+
 
   }
 }

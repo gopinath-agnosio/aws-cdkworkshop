@@ -24,7 +24,7 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * `cdk bootstrap` to install the bootstrap stack into an environment.
 * `cdk deploy`  to deploy a CDK App. Simillar to Apply.
 * `cdk diff` to check the difference from previous deployed instances. Simillar to Plan.  
-
+* `npm install --save-dev jest @types/jest @aws-cdk/assert`
 
 
 New Pipelines:
@@ -34,3 +34,4 @@ New Pipelines:
 Install the necessary modules
 * `npm install @aws-cdk/aws-codepipeline @aws-cdk/aws-codepipeline-actions @aws-cdk/pipelines`
 
+* `tsc --build --clean` to clean the old js and d.ts files
