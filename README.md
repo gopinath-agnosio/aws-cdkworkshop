@@ -31,3 +31,6 @@ New Pipelines:
 * `cdk synth`
 * `npx cdk bootstrap --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess `
 
+Install the necessary modules
+* `npm install @aws-cdk/aws-codepipeline @aws-cdk/aws-codepipeline-actions @aws-cdk/pipelines`
+
