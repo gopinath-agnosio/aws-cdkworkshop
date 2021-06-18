@@ -1,5 +1,5 @@
 {
-  "app": "node bin/cdkworkspace.js",
+  "app": "npx ts-node --prefer-ts-exts bin/cdkworkspace.js",
   "context": {
       "@aws-cdk/core:newStyleStackSynthesis": true
   }
