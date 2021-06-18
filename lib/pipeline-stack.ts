@@ -44,8 +44,8 @@ export class WorkshopPipelineStack extends cdk.Stack {
             sourceAction: new codepipeline_actions.GitHubSourceAction({
                 actionName: 'GitHub',
                 output: sourceArtifact,
-                oauthToken: SecretValue.secretsManager('agnos-github/github-token'),
-                trigger: codepipeline_actions.GitHubTrigger.WEBHOOK,
+                oauthToken: SecretValue.secretsManager("agnos-github/github-token"),
+                trigger: codepipeline_actions.GitHubTrigger.POLL,
                 owner: 'gopinath-agnosio',
                 repo: 'aws-cdkworkshop'
             }),
