@@ -45,9 +45,9 @@ export class WorkshopPipelineStack extends cdk.Stack {
                 actionName: 'GitHub',
                 output: sourceArtifact,
                 oauthToken: SecretValue.secretsManager('agnos-github/github-token'),
+                trigger: codepipeline_actions.GitHubTrigger.WEBHOOK,
                 owner: 'gopinath-agnosio',
                 repo: 'aws-cdkworkshop'
-
             }),
 
             //Builds our source code outlined above into a cloud assembly artifact
@@ -55,7 +55,8 @@ export class WorkshopPipelineStack extends cdk.Stack {
                 sourceArtifact,                 // where to get the source code to build
                 cloudAssemblyArtifact,          // where to place build source
                 
-                buildCommand: 'npm run build'   // Language specific build cmd
+                buildCommand: 'npm run build',   // Language specific build cmd
+                synthCommand: 'cdk synth'
 
             })
         });
