@@ -12,9 +12,11 @@ export class WorkshopPipelineStack extends cdk.Stack {
         super(scope, id, props);
  
         //create a CodeCommit repository called 'WorkshopRepo'
+        /*
         const repo = new codecommit.Repository(this, 'WorkshopRepo', {
             repositoryName: "WorkshopRepo"
         });
+        */
 
         // Define the artifact representing the sourcecode
         const sourceArtifact = new codepipeline.Artifact();
@@ -40,11 +42,11 @@ export class WorkshopPipelineStack extends cdk.Stack {
             */
 
             sourceAction: new codepipeline_actions.GitHubSourceAction({
-                actionName: 'GitHub Commit',
+                actionName: 'GitHub',
                 output: sourceArtifact,
                 oauthToken: SecretValue.secretsManager('agnos-github/github-token'),
                 owner: 'gopinath-agnosio',
-                repo: 'https://github.com/gopinath-agnosio/aws-cdkworkshop'
+                repo: 'aws-cdkworkshop'
 
             }),
 

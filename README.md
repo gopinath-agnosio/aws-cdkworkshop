@@ -35,3 +35,8 @@ Install the necessary modules
 * `npm install @aws-cdk/aws-codepipeline @aws-cdk/aws-codepipeline-actions @aws-cdk/pipelines`
 
 * `tsc --build --clean` to clean the old js and d.ts files
+
+
+
+## Installation of cdk packages
+* `npm install cdk-dynamo-table-viewer @aws-cdk/aws-lambda @aws-cdk/aws-apigateway @aws-cdk/aws-dynamodb  @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline @aws-cdk/aws-codepipeline-actions @aws-cdk/pipelines `
