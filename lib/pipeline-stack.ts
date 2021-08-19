@@ -19,19 +19,22 @@ export class WorkshopPipelineStack extends cdk.Stack {
         */
 
         // Define the artifact representing the sourcecode
-        const sourceArtifact = new codepipeline.Artifact();
+        const sourceArtifact = new codepipeline.Artifact('SourceArtifact');
 
         //Define the artifact representing the cloud assembly
         // (cloudformation template + all other assets)
-        const cloudAssemblyArtifact = new codepipeline.Artifact();
+        const cloudAssemblyArtifact = new codepipeline.Artifact("BuildArtifact");
 
         //const gitHubSecureToken = ssm.StringParameter.valueFromLookup(
         //    this, 'agnos-github-token');
 
+        const oauthToken = SecretValue.secretsManager('agnos-github-token', {});
+
         //The basic pipeline declaration. This sets the initial structure of our pipeline
         const pipeline = new CdkPipeline(this, 'Pipeline', {
             pipelineName: 'WorkshopPipeline',
-            cloudAssemblyArtifact,
+            cloudAssemblyArtifact: cloudAssemblyArtifact,
+            
             /*
             //generates the source artifact from the repo we created in the last step
             sourceAction: new codepipeline_actions.CodeCommitSourceAction({
@@ -40,25 +43,42 @@ export class WorkshopPipelineStack extends cdk.Stack {
                 repository: repo
             }), 
             */
-
+           
             sourceAction: new codepipeline_actions.GitHubSourceAction({
-                actionName: 'GitHub',
+                actionName: 'GitHubSource',
                 output: sourceArtifact,
-                oauthToken: SecretValue.secretsManager("agnos-github/github-token"),
-                trigger: codepipeline_actions.GitHubTrigger.POLL,
+                oauthToken: oauthToken,
+                trigger: codepipeline_actions.GitHubTrigger.WEBHOOK,
                 owner: 'gopinath-agnosio',
-                repo: 'aws-cdkworkshop'
+                repo: 'aws-cdkworkshop',
+                branch: 'main'
             }),
 
             //Builds our source code outlined above into a cloud assembly artifact
+           
             synthAction: SimpleSynthAction.standardNpmSynth({
-                sourceArtifact,                 // where to get the source code to build
-                cloudAssemblyArtifact,          // where to place build source
-                
-                buildCommand: 'npm run build',   // Language specific build cmd
-                synthCommand: 'cdk synth'
-
+                sourceArtifact: sourceArtifact,                 // where to get the source code to build
+                cloudAssemblyArtifact: cloudAssemblyArtifact,          // where to place build source
+                //buildCommand: 'npm run build',   // Language specific build cmd
+                //synthCommand: 'cdk synth'
             })
+            
+            /*
+            synthAction: new SimpleSynthAction({
+                sourceArtifact: sourceArtifact,                 // where to get the source code to build
+                cloudAssemblyArtifact: cloudAssemblyArtifact,          // where to place build source
+                installCommands: [ 
+                   'npm install -g aws-cdk',
+                   'npm install -g typescript' 
+                ],
+                buildCommands: [
+                   'npm i --save', 
+                   'npm run build' 
+                ],   // Language specific build cmd
+                synthCommand: 'npx cdk synth'
+            })
+            */
+
         });
 
         const deploy = new WorkshopPipelineStage(this, 'Deploy');

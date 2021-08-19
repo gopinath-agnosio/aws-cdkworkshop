@@ -4,7 +4,7 @@ npm run build
 npx cdk bootstrap --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess
 npx cdk bootstrap --profile gmandava-sbx
 
-npx cdk synth
-npx cdk diff
+npx cdk synth --profile gmandava-sbx
+npx cdk diff --profile gmandava-sbx
 
-npx cdk deploy
+npx cdk deploy --profile gmandava-sbx

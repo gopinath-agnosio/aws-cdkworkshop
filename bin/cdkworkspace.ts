@@ -15,3 +15,5 @@ const props = {
 
 //new CdkworkspaceStack(app, 'CdkworkspaceStack');
 new WorkshopPipelineStack(app, 'CdkWorkshopPipelineStack', { ...props } );
+
+app.synth();
